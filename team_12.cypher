@@ -1,3 +1,8 @@
+/* 
+CS350 Assignment 2
+Group 12: Au Sein, Honey Love, Stephanie Myalik
+*/
+
 /* 1. Show the name of each tournament included in the database. */
 MATCH (t:Tournament)
 RETURN t.name AS TournamentName
@@ -28,16 +33,36 @@ MATCH (p:Person)-[:REPRESENTS]->(t:Team {name: "USA"})
 MATCH (p)-[:SCORED_GOAL]->(tournament:Tournament)
 RETURN p.name AS PlayerName
 
-/* 7. Who was the coach of the USA squad in 2019 (that is, the squad whose id is "USA in 2019")? */
-MATCH (p:Person)-[:COACH_FOR]->(s:Squad {id: "USA in 2019"})
-RETURN p.name AS CoachName
+/* 
+ Author: Stephanie Myalik
+ 7. Who was the coach of the USA squad in 2019 (that is, the squad whose id is "USA in 2019")? 
+*/
+MATCH (team:Team {name: "USA"})-[:NAMED]->(squad:Squad {id: "USA in 2019"})
+MATCH (coach:Person)-[:COACH_FOR]->(squad)
+RETURN team.name, squad.id, coach.name;
 
-/* 8. Show all the matches in which "Rose Lavelle" scored a goal. */
-MATCH (p:Person {name: "Rose Lavelle"})-[:SCORED_GOAL]->(m:Match)
-RETURN m AS Matches
 
-/* 9. Show the name of each person who represented team "USA" (as player) and also coached for
- some squad in the tournaments (not at the same time, of course). */
-MATCH (p:Person)-[:REPRESENTS]->(t:Team {name: "USA"})
-MATCH (p)-[:COACH_FOR]->(s:Squad)
-RETURN p.name AS PersonName
+/* 
+ Author: Stephanie Myalik
+ 8. Show all the matches in which "Rose Lavelle" scored a goal. 
+*/
+MATCH (player:Person {name: "Rose Lavelle"})-[:SCORED_GOAL]->(match:Match)
+RETURN match.date;
+
+
+/* 
+ Author: Stephanie Myalik
+ 9. Show the name of each person who represented team "USA" (as player) and also coached for
+ some squad in the tournaments (not at the same time, of course). 
+*/
+
+// Team USA as players
+MATCH (person:Person)-[:REPRESENTS]->(team:Team {name: "USA"})
+RETURN DISTINCT person.name AS name, 
+       "Player" AS role
+UNION
+// Team USA Coaches
+MATCH (team:Team {name: "USA"})-[:NAMED]->(squad:Squad)
+MATCH (coach:Person)-[:COACH_FOR]->(squad)
+RETURN DISTINCT coach.name AS name, 
+       "Coach" AS role;
