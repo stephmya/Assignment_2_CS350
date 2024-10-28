@@ -19,21 +19,23 @@ Author: Honey Love
 MATCH (p:Person {name: "Lauren Holiday"})
 RETURN p.dob AS date_of_birth;
 
+/* Author: Au Sein */
 /* 4. Show the data of each person whose name contains the substring 'Hara'
  Hint: you may do match followed by WHERE n.name CONTAINS …. */
-MATCH (person:Person)
-WHERE person.name CONTAINS 'Hara'
-RETURN person;
+MATCH (p:Person)
+WHERE p.name CONTAINS 'Hara'
+RETURN p
 
-
+/* Author: Au Sein */
 /* 5. Show the number of squads that 'Kelley O Hara' was in. */
-MATCH (person:Person {name: "Kelley O Hara"})-[:IN_SQUAD]->(squad:Squad)
-RETURN COUNT(DISTINCT squad) AS number_of_squads;
+MATCH (p:Person {name: "Kelley O Hara"})-[:IN_SQUAD]->(s:Squad)
+RETURN COUNT(s) AS NumberOfSquads
 
+/* Author: Au Sein */
 /* 6. Show the name of each player (Person) for team 'USA' who has scored a goal in the tournaments. */
-MATCH (player:Person)-[:REPRESENTS]->(team:Team {name: "USA"})
-MATCH (player)-[:SCORED_GOAL]->(match:Match)
-RETURN DISTINCT player.name;
+MATCH (p:Person)-[:REPRESENTS]->(t:Team {name: "USA"})
+MATCH (p)-[:SCORED_GOAL]->(tournament:Tournament)
+RETURN p.name AS PlayerName
 
 /* 
  Author: Stephanie Myalik
