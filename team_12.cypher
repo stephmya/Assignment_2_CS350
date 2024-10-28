@@ -4,16 +4,20 @@ Group 12: Au Sein, Honey Love, Stephanie Myalik
 */
 
 /* 1. Show the name of each tournament included in the database. */
+Author: Honey Love
 MATCH (t:Tournament)
-RETURN t.name AS TournamentName
+RETURN t.name AS tournament_name
 
 /* 2. Show the name of each player (Person) who has ever represented the USA. */
+Author: Honey Love
 MATCH (p:Person)-[:REPRESENTS]->(t:Team {name: "USA"})
-RETURN p.name AS PlayerName
+RETURN DISTINCT p.name;
 
 /* 3. Show the date of birth (dob) of Lauren Holiday. */
+Author: Honey Love
+
 MATCH (p:Person {name: "Lauren Holiday"})
-RETURN p.dob AS DateOfBirth
+RETURN p.dob AS date_of_birth;
 
 /* Author: Au Sein */
 /* 4. Show the data of each person whose name contains the substring 'Hara'
