@@ -49,8 +49,8 @@ RETURN team.name, squad.id, coach.name;
  Author: Stephanie Myalik
  8. Show all the matches in which "Rose Lavelle" scored a goal. 
 */
-MATCH (player:Person {name: "Rose Lavelle"})-[:SCORED_GOAL]->(match:Match)
-RETURN match.date;
+MATCH (player:Person {name: 'Rose Lavelle'})-[:SCORED_GOAL]->(match:Match)
+RETURN match;
 
 /* 
  Author: Stephanie Myalik
@@ -58,13 +58,6 @@ RETURN match.date;
  some squad in the tournaments (not at the same time, of course). 
 */
 
-// Team USA as players
 MATCH (person:Person)-[:REPRESENTS]->(team:Team {name: "USA"})
-RETURN DISTINCT person.name AS name, 
-       "Player" AS role
-UNION
-// Team USA Coaches
-MATCH (team:Team {name: "USA"})-[:NAMED]->(squad:Squad)
-MATCH (coach:Person)-[:COACH_FOR]->(squad)
-RETURN DISTINCT coach.name AS name, 
-       "Coach" AS role;
+MATCH (person)-[:COACH_FOR]->(squad:Squad)
+RETURN DISTINCT person.name AS name
